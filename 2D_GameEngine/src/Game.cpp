@@ -1,7 +1,8 @@
 #include "Game.h"
-#include<iostream>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <glm/glm.hpp>
+#include<iostream>
 
 Game::Game() {
 	isRunning = false;
@@ -59,11 +60,24 @@ void Game::ProcessInput() {
 		}
 	}
 }
-void Game::Setup() {
 
+glm::vec2 playerPosition;
+glm::vec2 playerVelocity;
+void Game::Setup() {
+	playerPosition = glm::vec2(windowWidth/2, windowHeight/2);
+	playerVelocity = glm::vec2(1, 0);
 }
 void Game::Update() {
+	//Clamping framerate
+	/*while (!SDL_TICKS_PASSED(SDL_GetTicks(), millisecsPreviousFrame + MILLISECS_PER_FRAME));*/
+	int timeToWait = MILLISECS_PER_FRAME - (SDL_GetTicks() - millisecsPreviousFrame);
+	if (timeToWait > 0 && timeToWait < MILLISECS_PER_FRAME)
+		SDL_Delay(timeToWait);
 
+	millisecsPreviousFrame = SDL_GetTicks();
+
+	playerPosition += playerVelocity;
+	
 }
 void Game::Render() {
 	SDL_SetRenderDrawColor(renderer, 21, 21, 21, 255);
@@ -74,7 +88,12 @@ void Game::Render() {
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 	SDL_FreeSurface(surface);
 	//dst rect in the renderer to place the texture we just created
-	SDL_Rect dstRect = { windowWidth/2,windowHeight/2,64,64 };
+	SDL_Rect dstRect = { 
+		(int)playerPosition.x, 
+		(int)playerPosition.y,
+		64,
+		64 
+	};
 
 	SDL_RenderCopy(renderer, texture, NULL, &dstRect);
 
