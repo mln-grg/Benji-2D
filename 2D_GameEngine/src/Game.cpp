@@ -65,18 +65,23 @@ glm::vec2 playerPosition;
 glm::vec2 playerVelocity;
 void Game::Setup() {
 	playerPosition = glm::vec2(windowWidth/2, windowHeight/2);
-	playerVelocity = glm::vec2(1, 0);
+	playerVelocity = glm::vec2(100, 5);
 }
 void Game::Update() {
 	//Clamping framerate
 	/*while (!SDL_TICKS_PASSED(SDL_GetTicks(), millisecsPreviousFrame + MILLISECS_PER_FRAME));*/
-	int timeToWait = MILLISECS_PER_FRAME - (SDL_GetTicks() - millisecsPreviousFrame);
+	double timeToWait = MILLISECS_PER_FRAME - (SDL_GetTicks() - millisecsPreviousFrame);
 	if (timeToWait > 0 && timeToWait < MILLISECS_PER_FRAME)
 		SDL_Delay(timeToWait);
 
+	//delta time
+	double deltaTime = (SDL_GetTicks() - millisecsPreviousFrame)/1000;
+
 	millisecsPreviousFrame = SDL_GetTicks();
 
-	playerPosition += playerVelocity;
+	playerPosition.x += playerVelocity.x * deltaTime;
+	playerPosition.y += playerVelocity.y * deltaTime;
+	//playerPosition += playerVelocity;
 	
 }
 void Game::Render() {
