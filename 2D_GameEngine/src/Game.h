@@ -22,6 +22,7 @@ public:
 	void Update();
 	void Render();
 	void Destroy();
+	void Hi();
 
 	int windowWidth;
 	int windowHeight;

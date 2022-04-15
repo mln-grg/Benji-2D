@@ -1,14 +1,16 @@
+#include<iostream>
+#include "Logger.h"
 #include "Game.h"
 #include <SDL.h>
 #include <SDL_image.h>
 #include <glm/glm.hpp>
-#include<iostream>
 
 Game::Game() {
+	Logger::Log("Constructor Called");
 	isRunning = false;
 }
 Game::~Game() {
-	
+	Logger::Err("Destructor callled");
 }
 void Game::Initialize() {
 
@@ -39,6 +41,7 @@ void Game::Initialize() {
 			std::cerr << "Error creating SDL renderer." << std::endl;
 			return;
 		}
+		//SDL_SetWindowResizable(window,SDL_bool::SDL_TRUE);
 		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 		isRunning = true;
 	}
@@ -64,7 +67,7 @@ void Game::ProcessInput() {
 glm::vec2 playerPosition;
 glm::vec2 playerVelocity;
 void Game::Setup() {
-	playerPosition = glm::vec2(windowWidth/2, windowHeight/2);
+	playerPosition = glm::vec2(10, 20);
 	playerVelocity = glm::vec2(100, 5);
 }
 void Game::Update() {
