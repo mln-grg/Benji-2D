@@ -7,3 +7,4 @@ public:
 	static void Err(const std::string& message);
 };
 
+	

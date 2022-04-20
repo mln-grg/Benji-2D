@@ -4,7 +4,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <glm/glm.hpp>
-#include "ECS/ECS.h"
 
 Game::Game() {
 	Logger::Log("Constructor Called");
@@ -65,11 +64,11 @@ void Game::ProcessInput() {
 	}
 }
 
-//glm::vec2 playerPosition;
-//glm::vec2 playerVelocity;
+glm::vec2 playerPosition;
+glm::vec2 playerVelocity;
 void Game::Setup() {
-	/*playerPosition = glm::vec2(10, 20);
-	playerVelocity = glm::vec2(100, 5);*/
+	playerPosition = glm::vec2(10, 20);
+	playerVelocity = glm::vec2(100, 5);
 }
 void Game::Update() {
 	//Clamping framerate
@@ -83,8 +82,8 @@ void Game::Update() {
 
 	millisecsPreviousFrame = SDL_GetTicks();
 
-	/*playerPosition.x += playerVelocity.x * deltaTime;
-	playerPosition.y += playerVelocity.y * deltaTime;*/
+	playerPosition.x += playerVelocity.x * deltaTime;
+	playerPosition.y += playerVelocity.y * deltaTime;
 	//playerPosition += playerVelocity;
 	
 }
@@ -92,7 +91,21 @@ void Game::Render() {
 	SDL_SetRenderDrawColor(renderer, 21, 21, 21, 255);
 	SDL_RenderClear(renderer);
 	
-	
+	//Drawing a test PNG texture
+	SDL_Surface* surface=IMG_Load("./assets/images/tank-tiger-right.png");
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_FreeSurface(surface);
+	//dst rect in the renderer to place the texture we just created
+	SDL_Rect dstRect = { 
+		(int)playerPosition.x, 
+		(int)playerPosition.y,
+		64,
+		64 
+	};
+
+	SDL_RenderCopy(renderer, texture, NULL, &dstRect);
+
+	SDL_DestroyTexture(texture);
 
 	SDL_RenderPresent(renderer);
 }
