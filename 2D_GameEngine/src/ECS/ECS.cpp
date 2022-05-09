@@ -32,6 +32,8 @@ Entity Registry::CreateEntity() {
     entityId = numEntities++;
 
     Entity entity(entityId);
+    entity.registry = this;
+
     entitiesToBeAdded.insert(entity);
 
     if (entityId >= entityComponentSignatures.size()) {
@@ -68,3 +70,5 @@ void Registry::Update() {
 
     // TODO: Remove the entities that are waiting to be killed from the active Systems
 }
+
+
