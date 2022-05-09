@@ -7,112 +7,106 @@
 #include "ECS/ECS.h"
 
 Game::Game() {
-	Logger::Log("Constructor Called");
-	isRunning = false;
+    isRunning = false;
+    registry = new Registry();
+    Logger::Log("Game constructor called!");
 }
+
 Game::~Game() {
-	Logger::Err("Destructor callled");
+    Logger::Log("Game destructor called!");
 }
+
 void Game::Initialize() {
-
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) 
-	{
-		std::cerr << "Error Initializing SDL"<<std::endl;
-		return;
-	}
-	else {
-		SDL_DisplayMode displayMode;
-		SDL_GetCurrentDisplayMode(0, &displayMode);
-		windowWidth = displayMode.w;
-		windowHeight = displayMode.h;
-			window = SDL_CreateWindow(
-			"Benji",
-			SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED,
-			windowWidth,
-			windowHeight,
-			SDL_WINDOW_BORDERLESS
-		);
-		if (!window) {
-			std::cerr << "Error Creating SDL window" << std::endl;
-			return;
-		}
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-		if (!renderer) {
-			std::cerr << "Error creating SDL renderer." << std::endl;
-			return;
-		}
-		//SDL_SetWindowResizable(window,SDL_bool::SDL_TRUE);
-		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
-		isRunning = true;
-	}
-
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+        Logger::Err("Error initializing SDL.");
+        return;
+    }
+    SDL_DisplayMode displayMode;
+    SDL_GetCurrentDisplayMode(0, &displayMode);
+    windowWidth = displayMode.w;
+    windowHeight = displayMode.h;
+    window = SDL_CreateWindow(
+        NULL,
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        windowWidth,
+        windowHeight,
+        SDL_WINDOW_BORDERLESS
+    );
+    if (!window) {
+        Logger::Err("Error creating SDL window.");
+        return;
+    }
+    renderer = SDL_CreateRenderer(window, -1, 0);
+    if (!renderer) {
+        Logger::Err("Error creating SDL renderer.");
+        return;
+    }
+    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+    isRunning = true;
 }
+
 void Game::ProcessInput() {
-	SDL_Event sdlEvent;
-	while (SDL_PollEvent(&sdlEvent)) {
-		switch (sdlEvent.type) {
-		case SDL_QUIT:
-			isRunning = false;
-			break;
-		case SDL_KEYDOWN:
-			if (sdlEvent.key.keysym.sym == SDLK_ESCAPE) {
-				isRunning = false;
-			}
-			break;
-		
-		}
-	}
+    SDL_Event sdlEvent;
+    while (SDL_PollEvent(&sdlEvent)) {
+        switch (sdlEvent.type) {
+        case SDL_QUIT:
+            isRunning = false;
+            break;
+        case SDL_KEYDOWN:
+            if (sdlEvent.key.keysym.sym == SDLK_ESCAPE) {
+                isRunning = false;
+            }
+            break;
+        }
+    }
 }
 
-//glm::vec2 playerPosition;
-//glm::vec2 playerVelocity;
 void Game::Setup() {
-	/*playerPosition = glm::vec2(10, 20);
-	playerVelocity = glm::vec2(100, 5);*/
+    // Create some entities
+    Entity tank = registry->CreateEntity();
+    Entity truck = registry->CreateEntity();
 }
+
 void Game::Update() {
-	//Clamping framerate
-	/*while (!SDL_TICKS_PASSED(SDL_GetTicks(), millisecsPreviousFrame + MILLISECS_PER_FRAME));*/
-	double timeToWait = MILLISECS_PER_FRAME - (SDL_GetTicks() - millisecsPreviousFrame);
-	if (timeToWait > 0 && timeToWait < MILLISECS_PER_FRAME)
-		SDL_Delay(timeToWait);
+    // If we are too fast, waste some time until we reach the MILLISECS_PER_FRAME
+    int timeToWait = MILLISECS_PER_FRAME - (SDL_GetTicks() - millisecsPreviousFrame);
+    if (timeToWait > 0 && timeToWait <= MILLISECS_PER_FRAME) {
+        SDL_Delay(timeToWait);
+    }
 
-	//delta time
-	double deltaTime = (SDL_GetTicks() - millisecsPreviousFrame)/1000;
+    // The difference in ticks since the last frame, converted to seconds
+    double deltaTime = (SDL_GetTicks() - millisecsPreviousFrame) / 1000.0;
 
-	millisecsPreviousFrame = SDL_GetTicks();
+    // Store the "previous" frame time
+    millisecsPreviousFrame = SDL_GetTicks();
 
-	/*playerPosition.x += playerVelocity.x * deltaTime;
-	playerPosition.y += playerVelocity.y * deltaTime;*/
-	//playerPosition += playerVelocity;
-	
+    // TODO:
+    // MovementSystem.Update();
+    // CollisionSystem.Update();
+    // DamageSystem.Update();
 }
+
 void Game::Render() {
-	SDL_SetRenderDrawColor(renderer, 21, 21, 21, 255);
-	SDL_RenderClear(renderer);
-	
-	
+    SDL_SetRenderDrawColor(renderer, 21, 21, 21, 255);
+    SDL_RenderClear(renderer);
 
-	SDL_RenderPresent(renderer);
+    // TODO: Render game objects...
+
+    SDL_RenderPresent(renderer);
 }
-
 
 void Game::Run() {
-	//Game Loop
-	Setup();
-	while (isRunning) 
-	{
-		ProcessInput();
-		Update();
-		Render();
-	}
-
+    Setup();
+    while (isRunning) {
+        ProcessInput();
+        Update();
+        Render();
+    }
 }
+
 void Game::Destroy() {
-
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 }
