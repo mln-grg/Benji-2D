@@ -792,6 +792,9 @@
     <ClInclude Include="src\ECS\ECS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Component\RigidBodyComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="libs\glm\detail\func_common.inl">
@@ -1226,6 +1229,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\ECS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\RigidBodyComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
