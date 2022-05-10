@@ -8,14 +8,20 @@
 #include "Component/TransformComponent.h"
 #include "Component/RigidBodyComponent.h"
 #include "Component/SpriteComponent.h"
+#include "Component/AnimationComponent.h"
+#include "Component/BoxColliderComponent.h"
+#include "Systems/AnimationSystem.h"
 #include "Systems/MovementSystem.h"
 #include "Systems/RenderSystem.h"
+#include "Systems/CollisionSystem.h"
+#include "Systems/RenderColliderSystem.h"
 #include "AssetStore/AssetStore.h"
 #include <fstream>
 #include <iostream>
 
 Game::Game() {
     isRunning = false;
+    isDebug = false;
     registry = std::make_unique<Registry>();
     assetStore = std::make_unique<AssetStore>();
     Logger::Log("Game constructor called!");
@@ -66,6 +72,9 @@ void Game::ProcessInput() {
             if (sdlEvent.key.keysym.sym == SDLK_ESCAPE) {
                 isRunning = false;
             }
+            if (sdlEvent.key.keysym.sym == SDLK_d) {
+                isDebug = !isDebug;
+            }
             break;
         }
     }
@@ -75,10 +84,15 @@ void Game::LoadLevel(int level) {
     // Add the sytems that need to be processed in our game
     registry->AddSystem<MovementSystem>();
     registry->AddSystem<RenderSystem>();
+    registry->AddSystem<AnimationSystem>();
+    registry->AddSystem<CollisionSystem>();
+    registry->AddSystem<RenderColliderSystem>();
 
     // Adding assets to the asset store
     assetStore->AddTexture(renderer, "tank-image", "./assets/images/tank-panther-right.png");
     assetStore->AddTexture(renderer, "truck-image", "./assets/images/truck-ford-right.png");
+    assetStore->AddTexture(renderer, "chopper-image", "./assets/images/chopper.png");
+    assetStore->AddTexture(renderer, "radar-image", "./assets/images/radar.png");
     assetStore->AddTexture(renderer, "tilemap-image", "./assets/tilemaps/jungle.png");
 
     // Load the tilemap
@@ -107,15 +121,29 @@ void Game::LoadLevel(int level) {
     mapFile.close();
 
     // Create an entity
+    Entity chopper = registry->CreateEntity();
+    chopper.AddComponent<TransformComponent>(glm::vec2(10.0, 100.0), glm::vec2(1.0, 1.0), 0.0);
+    chopper.AddComponent<RigidBodyComponent>(glm::vec2(0.0, 0.0));
+    chopper.AddComponent<SpriteComponent>("chopper-image", 32, 32, 1);
+    chopper.AddComponent<AnimationComponent>(2, 15, true);
+
+    Entity radar = registry->CreateEntity();
+    radar.AddComponent<TransformComponent>(glm::vec2(windowWidth - 74, 10.0), glm::vec2(1.0, 1.0), 0.0);
+    radar.AddComponent<RigidBodyComponent>(glm::vec2(0.0, 0.0));
+    radar.AddComponent<SpriteComponent>("radar-image", 64, 64, 1);
+    radar.AddComponent<AnimationComponent>(8, 5, true);
+
     Entity tank = registry->CreateEntity();
-    tank.AddComponent<TransformComponent>(glm::vec2(10.0, 10.0), glm::vec2(1.0, 1.0), 0.0);
-    tank.AddComponent<RigidBodyComponent>(glm::vec2(30.0, 0.0));
+    tank.AddComponent<TransformComponent>(glm::vec2(500.0, 10.0), glm::vec2(1.0, 1.0), 0.0);
+    tank.AddComponent<RigidBodyComponent>(glm::vec2(-30.0, 0.0));
     tank.AddComponent<SpriteComponent>("tank-image", 32, 32, 1);
+    tank.AddComponent<BoxColliderComponent>(32, 32);
 
     Entity truck = registry->CreateEntity();
     truck.AddComponent<TransformComponent>(glm::vec2(10.0, 10.0), glm::vec2(1.0, 1.0), 0.0);
     truck.AddComponent<RigidBodyComponent>(glm::vec2(20.0, 0.0));
     truck.AddComponent<SpriteComponent>("truck-image", 32, 32, 2);
+    truck.AddComponent<BoxColliderComponent>(32, 32);
 }
 
 void Game::Setup() {
@@ -140,6 +168,8 @@ void Game::Update() {
 
     // Invoke all the systems that need to update 
     registry->GetSystem<MovementSystem>().Update(deltaTime);
+    registry->GetSystem<AnimationSystem>().Update();
+    registry->GetSystem<CollisionSystem>().Update();
 }
 
 void Game::Render() {
@@ -148,7 +178,9 @@ void Game::Render() {
 
     // Invoke all the systems that need to render 
     registry->GetSystem<RenderSystem>().Update(renderer, assetStore);
-
+    if (isDebug) {
+        registry->GetSystem<RenderColliderSystem>().Update(renderer);
+    }
     SDL_RenderPresent(renderer);
 }
 
