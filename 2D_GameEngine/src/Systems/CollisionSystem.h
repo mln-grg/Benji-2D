@@ -1,9 +1,9 @@
 #pragma once
 #include "../ECS/ECS.h"
-#include "../Component/BoxColliderComponent.h"
-#include "../Component/TransformComponent.h"
 #include "../EventBus/EventBus.h"
 #include "../Events/CollisionEvent.h"
+#include "../Component/BoxColliderComponent.h"
+#include "../Component/TransformComponent.h"
 
 class CollisionSystem : public System {
 public:

@@ -147,6 +147,12 @@
     <ClInclude Include="src\AssetStore\AssetStore.h" />
     <ClInclude Include="src\Component\AnimationComponent.h" />
     <ClInclude Include="src\Component\BoxColliderComponent.h" />
+    <ClInclude Include="src\Component\CameraFollowComponent.h" />
+    <ClInclude Include="src\Component\HealthComponent.h" />
+    <ClInclude Include="src\Component\KeyboardControlComponent.h" />
+    <ClInclude Include="src\Component\KeyboardControlledComponent.h" />
+    <ClInclude Include="src\Component\ProjectileComponent.h" />
+    <ClInclude Include="src\Component\ProjectileEmitterComponent.h" />
     <ClInclude Include="src\Component\RigidBodyComponent.h" />
     <ClInclude Include="src\Component\SpriteComponent.h" />
     <ClInclude Include="src\Component\TransformComponent.h" />
@@ -411,10 +417,13 @@
     <ClInclude Include="libs\lua\lualib.h" />
     <ClInclude Include="libs\sol\sol.hpp" />
     <ClInclude Include="src\Systems\AnimationSystem.h" />
+    <ClInclude Include="src\Systems\CameraMovementSystem.h" />
     <ClInclude Include="src\Systems\CollisionSystem.h" />
     <ClInclude Include="src\Systems\DamageSystem.h" />
     <ClInclude Include="src\Systems\KeyBoardControlSystem.h" />
     <ClInclude Include="src\Systems\MovementSystem.h" />
+    <ClInclude Include="src\Systems\ProjectileEmitterSystem.h" />
+    <ClInclude Include="src\Systems\ProjectileLifeCycleSystem.h" />
     <ClInclude Include="src\Systems\RenderColliderSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />
   </ItemGroup>
@@ -557,16 +566,25 @@
     <ClCompile Include="AnimationSystem.cpp" />
     <ClCompile Include="AssetStore.cpp" />
     <ClCompile Include="BoxColliderComponent.cpp" />
+    <ClCompile Include="CameraFollowComponent.cpp" />
+    <ClCompile Include="CameraMovementSystem.cpp" />
     <ClCompile Include="CollisionEvent.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="DamageSystem.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="EventBus.cpp" />
+    <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="KeyboardControlComponent.cpp" />
+    <ClCompile Include="KeyboardControlledComponent.cpp" />
     <ClCompile Include="KeyBoardControlSystem.cpp" />
     <ClCompile Include="KeyPressedEvent.cpp" />
     <ClCompile Include="Logger.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\.Project\2D_GameEngine\2D_GameEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="ProjectileComponent.cpp" />
+    <ClCompile Include="ProjectileEmitterComponent.cpp" />
+    <ClCompile Include="ProjectileEmitterSystem.cpp" />
+    <ClCompile Include="ProjectileLifeCycleSystem.cpp" />
     <ClCompile Include="RenderColliderSystem.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
