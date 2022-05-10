@@ -151,6 +151,10 @@
     <ClInclude Include="src\Component\SpriteComponent.h" />
     <ClInclude Include="src\Component\TransformComponent.h" />
     <ClInclude Include="src\ECS\ECS.h" />
+    <ClInclude Include="src\EventBus\Event.h" />
+    <ClInclude Include="src\EventBus\EventBus.h" />
+    <ClInclude Include="src\Events\CollisionEvent.h" />
+    <ClInclude Include="src\Events\KeyPressedEvent.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="libs\glm\common.hpp" />
     <ClInclude Include="libs\glm\detail\compute_common.hpp" />
@@ -408,6 +412,8 @@
     <ClInclude Include="libs\sol\sol.hpp" />
     <ClInclude Include="src\Systems\AnimationSystem.h" />
     <ClInclude Include="src\Systems\CollisionSystem.h" />
+    <ClInclude Include="src\Systems\DamageSystem.h" />
+    <ClInclude Include="src\Systems\KeyBoardControlSystem.h" />
     <ClInclude Include="src\Systems\MovementSystem.h" />
     <ClInclude Include="src\Systems\RenderColliderSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />
@@ -551,7 +557,13 @@
     <ClCompile Include="AnimationSystem.cpp" />
     <ClCompile Include="AssetStore.cpp" />
     <ClCompile Include="BoxColliderComponent.cpp" />
+    <ClCompile Include="CollisionEvent.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
+    <ClCompile Include="DamageSystem.cpp" />
+    <ClCompile Include="Event.cpp" />
+    <ClCompile Include="EventBus.cpp" />
+    <ClCompile Include="KeyBoardControlSystem.cpp" />
+    <ClCompile Include="KeyPressedEvent.cpp" />
     <ClCompile Include="Logger.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\.Project\2D_GameEngine\2D_GameEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
