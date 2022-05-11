@@ -25,7 +25,7 @@ public:
     void OnKeyPressed(KeyPressedEvent& event) {
         if (event.symbol == SDLK_SPACE) {
             for (auto entity : GetSystemEntities()) {
-                if (entity.HasComponent<CameraFollowComponent>()) {
+                if (entity.HasTag("player")) {
                     const auto projectileEmitter = entity.GetComponent<ProjectileEmitterComponent>();
                     const auto transform = entity.GetComponent<TransformComponent>();
                     const auto rigidbody = entity.GetComponent<RigidBodyComponent>();
@@ -51,6 +51,7 @@ public:
 
                     // Create new projectile entity and add it to the world
                     Entity projectile = entity.registry->CreateEntity();
+                    projectile.Group("projectiles");
                     projectile.AddComponent<TransformComponent>(projectilePosition, glm::vec2(1.0, 1.0), 0.0);
                     projectile.AddComponent<RigidBodyComponent>(projectileVelocity);
                     projectile.AddComponent<SpriteComponent>("bullet-image", 4, 4, 4);
@@ -82,6 +83,7 @@ public:
 
                 // Add a new projectile entity to the registry
                 Entity projectile = registry->CreateEntity();
+                projectile.Group("projectiles");
                 projectile.AddComponent<TransformComponent>(projectilePosition, glm::vec2(1.0, 1.0), 0.0);
                 projectile.AddComponent<RigidBodyComponent>(projectileEmitter.projectileVelocity);
                 projectile.AddComponent<SpriteComponent>("bullet-image", 4, 4, 4);
