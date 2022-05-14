@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>F:\.Project\2D_GameEngine\2D_GameEngine\libs;C:\SDL2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\.Project\2D_GameEngine\2D_GameEngine\libs\lua;C:\SDL2\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>F:\.Project\2D_GameEngine\2D_GameEngine\libs\imgui;F:\.Project\2D_GameEngine\2D_GameEngine\libs;C:\SDL2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\.Project\2D_GameEngine\2D_GameEngine\libs\imgui;F:\.Project\2D_GameEngine\2D_GameEngine\libs\lua;C:\SDL2\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="libs\imgui\imgui_impl_sdl.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="src\AssetStore\AssetStore.h" />
     <ClInclude Include="src\Component\AnimationComponent.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="src\Component\ProjectileEmitterComponent.h" />
     <ClInclude Include="src\Component\RigidBodyComponent.h" />
     <ClInclude Include="src\Component\SpriteComponent.h" />
+    <ClInclude Include="src\Component\TextLabelComponent.h" />
     <ClInclude Include="src\Component\TransformComponent.h" />
     <ClInclude Include="src\ECS\ECS.h" />
     <ClInclude Include="src\EventBus\Event.h" />
@@ -425,7 +427,10 @@
     <ClInclude Include="src\Systems\ProjectileEmitterSystem.h" />
     <ClInclude Include="src\Systems\ProjectileLifeCycleSystem.h" />
     <ClInclude Include="src\Systems\RenderColliderSystem.h" />
+    <ClInclude Include="src\Systems\RenderGUISystem.h" />
+    <ClInclude Include="src\Systems\RenderHealthBarSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />
+    <ClInclude Include="src\Systems\RenderTextSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libs\glm\detail\func_common.inl" />
@@ -560,6 +565,8 @@
     <None Include="libs\glm\gtx\vector_angle.inl" />
     <None Include="libs\glm\gtx\vector_query.inl" />
     <None Include="libs\glm\gtx\wrap.inl" />
+    <None Include="libs\imgui\._LICENSE" />
+    <None Include="libs\imgui\LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationComponent.cpp" />
@@ -578,6 +585,7 @@
     <ClCompile Include="KeyboardControlledComponent.cpp" />
     <ClCompile Include="KeyBoardControlSystem.cpp" />
     <ClCompile Include="KeyPressedEvent.cpp" />
+    <ClCompile Include="libs\imgui\imgui_impl_sdl.cpp" />
     <ClCompile Include="Logger.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\.Project\2D_GameEngine\2D_GameEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -586,7 +594,10 @@
     <ClCompile Include="ProjectileEmitterSystem.cpp" />
     <ClCompile Include="ProjectileLifeCycleSystem.cpp" />
     <ClCompile Include="RenderColliderSystem.cpp" />
+    <ClCompile Include="RenderGUISystem.cpp" />
+    <ClCompile Include="RenderHealthBarSystem.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="RenderTextSystem.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="src\Component\RigidBodyComponent.cpp" />
     <ClCompile Include="src\ECS\ECS.cpp" />
@@ -599,6 +610,7 @@
     <ClCompile Include="libs\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Systems\MovementSystem.cpp" />
+    <ClCompile Include="TextLabelComponent.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

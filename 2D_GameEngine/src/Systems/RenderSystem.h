@@ -24,6 +24,20 @@ public:
             RenderableEntity renderableEntity;
             renderableEntity.spriteComponent = entity.GetComponent<SpriteComponent>();
             renderableEntity.transformComponent = entity.GetComponent<TransformComponent>();
+
+            // Check if the entity sprite is outside the camera view
+            bool isOutsideCameraView = (
+                renderableEntity.transformComponent.position.x + (renderableEntity.transformComponent.scale.x * renderableEntity.spriteComponent.width) < camera.x ||
+                renderableEntity.transformComponent.position.x > camera.x + camera.w ||
+                renderableEntity.transformComponent.position.y + (renderableEntity.transformComponent.scale.y * renderableEntity.spriteComponent.height) < camera.y ||
+                renderableEntity.transformComponent.position.y > camera.y + camera.h
+                );
+
+            // Cull sprites that are outside the camera view (and are not fixed)
+            if (isOutsideCameraView && !renderableEntity.spriteComponent.isFixed) {
+                continue;
+            }
+
             renderableEntities.emplace_back(renderableEntity);
         }
 
@@ -56,7 +70,7 @@ public:
                 &dstRect,
                 transform.rotation,
                 NULL,
-                SDL_FLIP_NONE
+                sprite.flip
             );
         }
     }
